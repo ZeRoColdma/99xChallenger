@@ -1,17 +1,27 @@
-function colorProcess(image, x, y, newColor) {
-  const currentColor = image[y][x];
-  if (currentColor === newColor) return;
-  image[y][x] = newColor;
-  if (x > 0 && image[y][x - 1] === currentColor)
-    colorProcess(image, x - 1, y, newColor);
-  if (x < image[0].length - 1 && image[y][x + 1] === currentColor)
-    colorProcess(image, x + 1, y, newColor);
-  if (y > 0 && image[y - 1][x] === currentColor)
-    colorProcess(image, x, y - 1, newColor);
-  if (y < image.length - 1 && image[y + 1][x] === currentColor)
-    colorProcess(image, x, y + 1, newColor);
+function processingBucktOfPain(image, x, y, oldColor, newColor) {
+  if (
+    x < 0 ||
+    x >= image.length ||
+    y < 0 ||
+    y >= image[0].length ||
+    image[x][y] !== oldColor
+  ) {
+    return;
+  }
+  image[x][y] = newColor;
+
+  processingBucktOfPain(image, x - 1, y, oldColor, newColor);
+  processingBucktOfPain(image, x + 1, y, oldColor, newColor);
+  processingBucktOfPain(image, x, y - 1, oldColor, newColor);
+  processingBucktOfPain(image, x, y + 1, oldColor, newColor);
 }
 
-let image = [".###..", "#..#.", ".###..", "#...."];
-colorProcess(image, 1, 1, "*");
-console.log(image);
+let image = [
+  [".", "#", "#", "#", ".", "."],
+  [".", "#", ".", ".", "#", "."],
+  [".", "#", "#", "#", ".", "."],
+  [".", "#", ".", ".", ".", "."],
+];
+
+processingBucktOfPain(image, 1, 1, "#", "O");
+console.log(image.join(","));
